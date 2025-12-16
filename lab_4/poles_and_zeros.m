@@ -1,0 +1,21 @@
+clc;
+clear all;
+close all;
+
+num = [2 8 6];
+den = [1 5 11 10 0];
+
+sys = tf (num,den)
+
+[num,den] = tfdata(sys)
+
+[num,den] = tfdata(sys, 'v')
+
+[z, p, k] = tf2zp(num, den)
+
+% z = roots of numerator [zeroes]
+% p = roots of denominator [poles]
+% k = gain
+
+pzmap(sys)
+sgrid

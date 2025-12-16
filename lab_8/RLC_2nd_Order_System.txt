@@ -1,0 +1,43 @@
+clc;
+clear all;
+close all;
+
+%name: Ayush Chaturvedi
+%prn: 24070127032
+%batch: RA-B1 [24-28]
+
+%Consider a RLC circuit with R=1000 ohms, L=10*10^(-3) H, C=0.01*10^(-6) F
+
+R = 10000;
+L = 10e-3;
+C = 0.01e-6;
+
+w_n = (1/sqrt(L*C));
+zeta = (R/2)*sqrt(C/L);
+s = tf('s');
+trfn = tf((w_n^2)/(s^2+2*zeta*w_n*s+w_n^2))
+
+subplot(2,1,1);
+step(trfn);
+stepinfo(trfn)
+grid on
+
+%Effect of adding Poles & Zeroes to the system:
+
+trfn_G = tf((w_n^2)/(s^2+2*zeta*w_n*s))
+trfn_G_z = tf(trfn_G*(s+0.00005)) %Open loop Transfer Function G(s) with zero
+trfn_G_p = tf(trfn_G/(s+0.005)) %Open loop Transfer Function G(s) with pole
+
+trfn_c1 = tf(trfn_G/(1+trfn_G)) %Closed loop Transfer Function
+trfn_c1_z = tf(trfn_G*(s+0.5)/(1+trfn_G))
+trfn_c1_p = tf(trfn_G/((1+trfn_G_p)*(s+5)))
+
+trfn_o1_z = tf(trfn_G_z/(1+trfn_G_z))
+trfn_o1_p = tf(trfn_G_p/(1+trfn_G_p))
+
+trfn_1 = tf((w_n^2)/(s^2+2*zeta*w_n*s+w_n^2))
+subplot(2,1,2);
+step(trfn_c1_z,trfn_c1_p);
+stepinfo(trfn_c1_z)
+stepinfo(trfn_c1_p)
+grid on

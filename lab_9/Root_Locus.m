@@ -1,0 +1,41 @@
+clc;
+clear all;
+close all;
+
+%To sketch the root locus of the given system
+
+n1 = [0 1 3];
+d1 = [2 4 6];
+sys1 = tf(n1,d1)
+subplot(2,2,1)
+rlocus(sys1)
+grid on
+
+n2 = [1 0 3];
+d2 = [1 4 0];
+sys2 = tf(n2,d2)
+subplot(2,2,2)
+rlocus(sys2)
+grid on
+
+n3 = [1 2];
+d3_1 = conv([1 0], [1 1]);
+d3_2 = conv([1 3], [1 5]);
+d3 = conv(d3_1,d3_2);
+sys3 = tf(n3,d3)
+subplot(2,2,3)
+rlocus(sys3)
+grid on
+axis([-8 2 -8 8])
+
+k = 2:2:160
+n4 = [0 1];
+d4 = [1 2 5 8];
+sys4 = tf(n4,d4)
+[r,k] = rlocus(sys4, k)
+subplot(2,2,4)
+plot(r, 'o')
+grid on
+xlabel('Real axis')
+ylabel("Img Axis");
+title("Root Locus Plot")
